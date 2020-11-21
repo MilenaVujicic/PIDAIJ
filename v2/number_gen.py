@@ -7,18 +7,22 @@ def number_generator(n):
     
     return arr
 
+def is_prime(a):
+    flag = True
+    for b in range(2, math.floor(math.sqrt(a))+1):
+        if a%b == 0:
+            flag = False
+
+    return flag
+
 def prime_number(arr):
     length = len(arr)
-    flag = True
+
     ret_arr = []
 
     for a in range(2, length+1):
-        for b in range(2, math.floor(math.sqrt(a))+1):
-            if a%b == 0:
-                flag = False
-        if flag == True:
-            ret_arr.append(a)
-        flag = True        
+        if is_prime(a):
+            ret_arr.append(a)     
                 
     return ret_arr
 
