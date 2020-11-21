@@ -47,20 +47,24 @@ def hex_dictionary(arr):
 
         
 
-try:
-    n = int(input("Enter array size "))
-except Exception:
-    print("Input wasn't a number")
-    
-arr = number_generator(n)
-primes = prime_number(arr)
-hexadecimal = prime_to_hex(primes)
-hexdict = hex_dictionary(hexadecimal)
-print("The array is ", arr)
-print("The primes are ", primes)
-print("Hexadecimal values are, ", hexadecimal)
+def main():
+    try:
+        n = int(input("Enter array size "))
+    except Exception:
+        print("Input wasn't a number")
+        
+    arr = number_generator(n)
+    primes = prime_number(arr)
+    hexadecimal = prime_to_hex(primes)
+    hexdict = hex_dictionary(hexadecimal)
+    print("The array is ", arr)
+    print("The primes are ", primes)
+    print("Hexadecimal values are, ", hexadecimal)
 
-print("Hexadecimal dictionary is, ", hexdict)
+    print("Hexadecimal dictionary is, ", hexdict)
+
+if __name__=="__main__":
+    main()
 
 
     
