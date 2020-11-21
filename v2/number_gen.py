@@ -1,6 +1,3 @@
-import random
-
-
 def number_generator(n):
     arr = []
     for i in range(1, n+1):
