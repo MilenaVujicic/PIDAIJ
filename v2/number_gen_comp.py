@@ -29,10 +29,7 @@ def hex_dictionary(arr):
 
     for a in arr:
         for char in a[2:]:
-            if char in ret_dict.keys():
-                ret_dict[char] += 1
-            else:
-                ret_dict[char] = 1
+            ret_dict[char] = ret_dict[char] + 1 if char in ret_dict.keys() else 1
 
     return ret_dict
 
