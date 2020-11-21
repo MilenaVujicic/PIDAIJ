@@ -33,6 +33,20 @@ def prime_to_hex(arr):
 
     return ret_arr
 
+def hex_dictionary(arr):
+    ret_dict = {}
+
+    for a in arr:
+        for char in a[2:]:
+            if char in ret_dict.keys():
+                ret_dict[char] += 1
+            else:
+                ret_dict[char] = 1
+
+    return ret_dict
+
+        
+
 try:
     n = int(input("Enter array size "))
 except Exception:
@@ -41,6 +55,12 @@ except Exception:
 arr = number_generator(n)
 primes = prime_number(arr)
 hexadecimal = prime_to_hex(primes)
+hexdict = hex_dictionary(hexadecimal)
 print("The array is ", arr)
 print("The primes are ", primes)
 print("Hexadecimal values are, ", hexadecimal)
+
+print("Hexadecimal dictionary is, ", hexdict)
+
+
+    
