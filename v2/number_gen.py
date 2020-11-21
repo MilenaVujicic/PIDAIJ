@@ -13,7 +13,7 @@ def prime_number(arr):
     ret_arr = []
 
     for a in range(2, length+1):
-        for b in range(2, math.floor(math.ceil(a))):
+        for b in range(2, math.floor(math.sqrt(a))+1):
             if a%b == 0:
                 flag = False
         if flag == True:
@@ -30,3 +30,4 @@ except Exception:
 arr = number_generator(n)
 print("The array is ", arr)
 print("The primes are ", prime_number(arr))
+print(len(prime_number(arr)))
