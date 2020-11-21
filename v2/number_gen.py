@@ -26,12 +26,21 @@ def prime_number(arr):
                 
     return ret_arr
 
+def prime_to_hex(arr):
+    ret_arr = []
+    for a in arr:
+        ret_arr.append(hex(a))
+
+    return ret_arr
+
 try:
     n = int(input("Enter array size "))
 except Exception:
     print("Input wasn't a number")
     
 arr = number_generator(n)
+primes = prime_number(arr)
+hexadecimal = prime_to_hex(primes)
 print("The array is ", arr)
-print("The primes are ", prime_number(arr))
-print(len(prime_number(arr)))
+print("The primes are ", primes)
+print("Hexadecimal values are, ", hexadecimal)
