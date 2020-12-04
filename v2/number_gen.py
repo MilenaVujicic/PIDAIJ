@@ -1,7 +1,7 @@
 import math
 
 def number_generator(n):
-    arr = []
+    arr = [] 
     for i in range(1, n+1):
         arr.append(i)
     
