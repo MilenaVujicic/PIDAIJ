@@ -1,9 +1,9 @@
 import math
+import tracemalloc
 
 def number_generator(n):
-    arr = [i for i in range (1, n+1)]
-
-    yield arr
+    for arr in range(1, n+1):
+        yield arr
 
 def is_prime(a):
     flag = True
@@ -13,24 +13,32 @@ def is_prime(a):
 
     return flag
 
-def prime_number(arr):
-    length = len(arr)
-    ret_arr = [a for a in range(2, length+1) if is_prime(a)]
+def prime_number(n):
+    arr = number_generator(n)
+    for a in arr:
+        if is_prime(a):
+            yield a
 
-    return ret_arr
 
 def prime_to_hex(arr):
     ret_arr = [hex(a) for a in arr]
-
     return ret_arr
 
-def hex_dictionary(arr):
+def prime_to_hex_yield(n):
+    for i in prime_number(n):
+        yield hex(i)
+
+
+def hex_dictionary(n):
     ret_dict = {}
+    arr = prime_to_hex_yield(n)
 
     for a in arr:
         for char in a[2:]:
-            ret_dict[char] = ret_dict[char] + 1 if char in ret_dict.keys() else 1
-
+            if char in ret_dict.keys():
+                ret_dict[char] += 1
+            else:
+                ret_dict[char] = 1
     return ret_dict
 
         
@@ -40,16 +48,14 @@ def main():
         n = int(input("Enter array size "))
     except Exception:
         print("Input wasn't a number")
-        
-    arr = number_generator(n)
-    primes = prime_number(arr)
-    hexadecimal = prime_to_hex(primes)
-    hexdict = hex_dictionary(hexadecimal)
-    print("The array is ", arr)
-    print("The primes are ", primes)
-    print("Primes length is", len(primes))
-    print("Hexadecimal values are, ", hexadecimal)
-    print("Hexadecimal dictionary is, ", hexdict)
+    tracemalloc.start()
+
+    arr = hex_dictionary(n)
+    print(arr)
+    current, peak = tracemalloc.get_traced_memory()
+    print(f"Current memory usage is {current / 10**6}MB; Peak was {peak / 10**6}MB")
+    tracemalloc.stop()
+
 
 if __name__=="__main__":
     main()
