@@ -49,7 +49,7 @@ def main():
   
     arr = []
     print("The hexadecimal values are: ")
-    with mp.Pool() as pool:
+    with mp.Pool(mp.cpu_count()) as pool:
         r = pool.imap(prime_to_hex, range(1,n))
         for num in r:
             if num is not None:
