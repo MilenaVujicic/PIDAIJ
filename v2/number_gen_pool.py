@@ -2,9 +2,6 @@ import math
 import multiprocessing as mp
 import tracemalloc
 
-def number_generator(num):
-    return num
-
 def is_prime(a):
     flag = True
     for b in range(2, math.floor(math.sqrt(a))+1):
@@ -50,10 +47,10 @@ def main():
     arr = []
     print("The hexadecimal values are: ")
     with mp.Pool(mp.cpu_count()) as pool:
-        r = pool.imap(prime_to_hex, range(1,n))
+        r = pool.imap_unordered(prime_to_hex, range(1,n))
         for num in r:
             if num is not None:
-                print(num)
+                #print(num)
                 arr.append(num)
 
         hexdict = hex_dictionary(arr)
