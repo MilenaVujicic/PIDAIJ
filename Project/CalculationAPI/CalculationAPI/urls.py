@@ -15,9 +15,11 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from calculation_module.views import calculate_sequential
+from calculation_module.views import calculate_sequential, calculate_generator, calculate_multi
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('calculation/sequential/', calculate_sequential),
+    path('calculation/generator/', calculate_generator),
+    path('calculation/multiprocess/', calculate_multi)
 
 ]
