@@ -11,15 +11,19 @@ import json
 # Create your views here.
 
 
-n = 1000
-m = 1000
-points = ["1,3", "3,2", "6,8", "9,6", "5,5", "20,20", "40,40", "500,500", "750,851"]
+n = 1500
+m = 1500
+points = ["1,3", "3,2", "6,8", "9,6", "5,5",
+          "15,16", "19,19", "20,20",
+          "25,27", "26,29", "30,35",
+          "40,40", "70,71", "99, 100",
+          "500,500", "750,851"]
 
 
 '''
-n = 50
-m = 50
-points = ["1,3", "3,2", "6,8", "9,6", "5,5", "10, 11", "25, 32", "41, 48"]
+n = 10
+m = 10
+points = ["1,3", "3,2", "6,8", "9,6", "5,5"]
 '''
 json_data = {
     "n": n,
@@ -48,9 +52,10 @@ def calculate_sequential(request):
     n = data["n"]
     m = data["m"]
     spec = data["points"]
+    spec = parse_special_fields(spec)
     tracemalloc.start()
     start_t = time.time()
-    result = seq.calculate_distance(n, m, parse_special_fields(spec))
+    result = seq.calculate_distance(n, m, spec)
     end_t = time.time()
     current, peak = tracemalloc.get_traced_memory()
     tracemalloc.stop()
@@ -78,9 +83,10 @@ def calculate_generator(request):
     n = data["n"]
     m = data["m"]
     spec = data["points"]
+    spec = parse_special_fields(spec)
     tracemalloc.start()
     start_t = time.time()
-    res = gen.calculate_distance(n, m, parse_special_fields(spec))
+    res = gen.calculate_distance(n, m, spec)
     for r in res:
         result.append(r)
     end_t = time.time()
@@ -108,9 +114,10 @@ def calculate_comprehension(request):
     n = data["n"]
     m = data["m"]
     spec = data["points"]
+    spec = parse_special_fields(spec)
     tracemalloc.start()
     start_t = time.time()
-    result = com.calculate_distance(n, m, parse_special_fields(spec))
+    result = com.calculate_distance(n, m, spec)
     end_t = time.time()
     current, peak = tracemalloc.get_traced_memory()
     tracemalloc.stop()
@@ -134,16 +141,21 @@ def calculate_multiprocess(request):
     elif request.method == "POST":
         data = JSONParser().parse(request)
 
-    result = []
-    time_in_s = 0
-    max_memory_in_MB = 0
-
     n = data["n"]
     m = data["m"]
     spec = data["points"]
-
-    result = mp.parallelize(n, m, parse_special_fields(spec))
-
+    spec = parse_special_fields(spec)
+    tracemalloc.start()
+    start_t = time.time()
+    res = mp.parallelize(n, m, spec)
+    result = []
+    for r in res:
+        result.append(r)
+    end_t = time.time()
+    current, peak = tracemalloc.get_traced_memory()
+    tracemalloc.stop()
+    time_in_s = end_t - start_t
+    max_memory_in_MB = peak / 10 ** 6
     ret_data = {
         "result": result,
         "time_in_s": time_in_s,

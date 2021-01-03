@@ -38,11 +38,10 @@ def parallelize(n, m, fields):
     global special_fields
     init_calc(fields)
     ret_val = []
-    with mp.Pool(mp.cpu_count()) as pool:
+    with mp.Pool(processes=mp.cpu_count()) as pool:
         res = pool.map(calculate_fields_distance, yield_matrix(n, m))
         for r in res:
-            ret_val.append(r)
-    return ret_val
+            yield r
 
 
 def init_calc(spec):
