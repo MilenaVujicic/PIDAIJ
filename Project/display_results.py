@@ -3,11 +3,14 @@ import json
 import matplotlib.pyplot as plt
 import random
 
-n = 10
-m = 10
-points = ["1,3", "3,2", "6,8", "9,6", "5,5"]
-url = 'http://localhost:8000/calculation/sequential/'
+#n = 10
+#m = 10
+#points = ["1,3", "3,2", "6,8", "9,6", "5,5"]
+url = 'http://localhost:8000/calculation/multiprocess/'
 
+n = 35
+m = 35
+points = ["1,3", "3,2", "6,8", "9,6", "5,5", "10,11", "25,32"]
 json_data = {
 	"n": n,
 	"m": m,

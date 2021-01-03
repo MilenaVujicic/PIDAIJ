@@ -3,49 +3,51 @@ import math
 import sys
 
 
-def calculate_point_distance(x, y, n, m):
-    distance = math.sqrt((x - n) ** 2 + (y - m) ** 2)
-    return distance
+special_fields = []
 
 
-def matrix_array(n, m, fields):
-    cnt = -1
+def calculate_fields_distance(field):
+    n, m= field
+    min_dist = sys.maxsize
+    idx = -1
+    for s in special_fields:
+        x, y, index = s
+        distance = math.sqrt((x - n) ** 2 + (y - m) ** 2)
+        if distance < min_dist:
+            min_dist = distance
+            idx = index
+        ret = idx
+    return ret
+
+
+def yield_matrix(n, m):
     for i in range(n):
         for j in range(m):
-            distance = sys.maxsize
-            ret_cnt = -1
-            for f in fields:
-                x, y, dist = f
-                if x == i and y == j:
-                    distance = 0
-                    cnt += 1
-                    ret_cnt = cnt
-
-            yield i, j, distance, ret_cnt
+            yield (i, j)
 
 
-def calculate_distance(matrix):
-    for m1 in matrix:
-        i1, j1, d1, ind1 = m1
-        if d1 == 0:
-            yield ind1
-        else:
-            for m2 in matrix:
-                i2, j2, d2, ind2 = m2
-                if d2 == 0:
-                    dist = calculate_point_distance(i1, j1, i2, j2)
-                    if dist < d1:
-                        d1 = dist
-                        ret_id = ind2
-                ret = ret_id
-            yield ret
+def return_matrix(n, m):
+    ret = []
+    for i in range(n):
+        for j in range(m):
+            ret.append((i, j))
+    return ret
 
 
 def parallelize(n, m, fields):
-    n_cpu = mp.cpu_count()
-    k = len(fields)
-    it = matrix_array(n, m, fields)
-    with mp.Pool(n_cpu) as pool:
-        r = pool.imap(calculate_distance, next(it))
-        for num in r:
-            yield num
+    global special_fields
+    init_calc(fields)
+    ret_val = []
+    with mp.Pool(mp.cpu_count()) as pool:
+        res = pool.map(calculate_fields_distance, yield_matrix(n, m))
+        for r in res:
+            ret_val.append(r)
+    return ret_val
+
+
+def init_calc(spec):
+    global special_fields
+    for s in spec:
+        special_fields.append(s)
+
+    return special_fields
